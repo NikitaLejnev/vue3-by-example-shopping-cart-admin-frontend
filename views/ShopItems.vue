@@ -88,6 +88,53 @@ export default {
   beforeMount() {
     this.getShopItems();
   },
+  methods: {
+    async getShopItems() {
+      const query = gql`
+        {
+          getShopItems {
+            shop_item_id
+            name
+            description
+            image_url
+            price
+          }
+        }
+      `;
+      const { getShopItems: data } = await graphQLClient.request(query);
+      this.shopItems = data;
+    },
+    async submitForm({ name, description, imageUrl, price: oldPrice }) {
+      const mutation = gql`
+      mutation addShopItem(
+        $name: String
+        $description: String
+        $image_url: String
+        $price: Float
+      ) {
+        addShopItem(
+          shopItem: {
+            name: $name
+            description: $description
+            image_url: $image_url
+            price: $price
+          }
+        ) {
+          status
+        }
+      }
+    `;
+      const variables = {
+        name,
+        description,
+        image_url: imageUrl,
+        price: +oldPrice,
+      };
+      await graphQLClient.request(mutation, variables);
+      this.showDialog = false;
+      await this.getShopItems();
+    },
+  }
 }
 
 </script>
