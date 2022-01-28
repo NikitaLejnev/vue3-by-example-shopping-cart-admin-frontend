@@ -24,3 +24,15 @@
       Order</button>
   </div>
 </template>
+
+<script>
+import { GraphQLClient, gql } from "graphql-request";
+import TopBar from '@/components/TopBar'
+const APIURL = "http://localhost:3000/graphql"
+const graphQLClient = new GraphQLClient(APIURL, {
+  headers: {
+    authorization: localStorage.getItem("token"),
+  },
+});
+
+</script>
