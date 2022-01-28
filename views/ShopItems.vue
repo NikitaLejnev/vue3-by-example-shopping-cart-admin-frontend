@@ -70,4 +70,24 @@ const schema = yup.object({
   price: yup.number().required().min(0),
 });
 
+export default {
+  name: "ShopItems",
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+    TopBar,
+  },
+  data() {
+    return {
+      shopItems: [],
+      showDialog: false,
+      schema,
+    };
+  },
+  beforeMount() {
+    this.getShopItems();
+  },
+}
+
 </script>
