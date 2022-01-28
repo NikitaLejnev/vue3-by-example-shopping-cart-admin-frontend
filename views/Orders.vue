@@ -20,8 +20,7 @@
     <p>
       <b>Total: ${{ calcTotal(order.ordered_items) }}</b>
     </p>
-    <button type="button" @click="deleteOrder(order)">Delete
-      Order</button>
+    <button type="button" @click="deleteOrder(order)">Delete Order</button>
   </div>
 </template>
 
@@ -35,4 +34,58 @@ const graphQLClient = new GraphQLClient(APIURL, {
   },
 });
 
+export default {
+  name: "Orders",
+  components: {
+    TopBar
+  },
+  data() {
+    return {
+      orders: [],
+    };
+  },
+  beforeMount() {
+    this.getOrders();
+  },
+  methods: {
+    calcTotal(orderedItems) {
+      return orderedItems.map((o) => o.price).reduce((a, b) => a + b, 0);
+    },
+    async getOrders() {
+      const query = gql`
+        {
+          getOrders {
+            order_id
+            name
+            address
+            phone
+            ordered_items {
+              shop_item_id
+              name
+              description
+              image_url
+              price
+            }
+          }
+        }
+      `;
+      const { getOrders: data } = await graphQLClient.request(query);
+      this.orders = data;
+    },
+    async deleteOrder({ order_id: orderId }) {
+      const mutation = gql`
+        mutation removeOrder($orderId: Int) {
+          removeOrder(orderId: $orderId) {
+            status
+          }
+        }
+      `;
+      const variables = {
+        orderId,
+      };
+      await graphQLClient.request(mutation, variables);
+      await this.getOrders();
+    },
+  },
+};
 </script>
