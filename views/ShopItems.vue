@@ -50,3 +50,24 @@
     </Form>
   </dialog>
 </template>
+
+<script>
+import { GraphQLClient } from "graphql-request";
+import * as yup from "yup";
+import TopBar from "@/components/TopBar";
+import { Form, Field, ErrorMessage } from "vee-validate";
+
+const APIURL = "http://localhost:3000/graphql";
+const graphQLClient = new GraphQLClient(APIURL, {
+  headers: {
+    authorization: localStorage.getItem("token"),
+  },
+});
+const schema = yup.object({
+  name: yup.string().required(),
+  description: yup.string().required(),
+  imageUrl: yup.string().required(),
+  price: yup.number().required().min(0),
+});
+
+</script>
