@@ -13,4 +13,40 @@
       Delete Item from Shop
     </button>
   </div>
+
+  <dialog :open="showDialog" class="center">
+    <h2>Add Item to Shop</h2>
+    <Form :validationSchema="schema" @submit="submitForm">
+      <div>
+        <label for="name">Name</label>
+        <br />
+        <Field name="name" type="text" placeholder="Name" />
+        <ErrorMessage name="name" />
+      </div>
+      <br />
+      <div>
+        <label for="description">Description</label>
+        <br />
+        <Field name="description" type="text" placeholder="Description" />
+        <ErrorMessage name="description" />
+      </div>
+      <br />
+      <div>
+        <label for="imageUrl">Image URL</label>
+        <br />
+        <Field name="imageUrl" type="text" placeholder="Image URL" />
+        <ErrorMessage name="imageUrl" />
+      </div>
+      <br />
+      <div>
+        <label for="price">Price</label>
+        <br />
+        <Field name="price" type="text" placeholder="Price" />
+        <ErrorMessage name="price" />
+      </div>
+      <br />
+      <input type="submit" />
+      <button @click="showDialog = false" type="button">Cancel</button>
+    </Form>
+  </dialog>
 </template>
