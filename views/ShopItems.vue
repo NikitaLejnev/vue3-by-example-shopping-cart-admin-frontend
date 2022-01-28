@@ -134,7 +134,20 @@ export default {
       this.showDialog = false;
       await this.getShopItems();
     },
-  }
-}
-
+    async deleteItem({ shop_item_id: shopItemId }) {
+      const mutation = gql`
+        mutation removeShopItem($shopItemId: Int) {
+          removeShopItems(shopItemId: $shopItemId) {
+            status
+          }
+        }
+      `;
+      const variables = {
+        shopItemId,
+      };
+      await graphQLClient.request(mutation, variables);
+      await this.getShopItems();
+    },
+  },
+};
 </script>
