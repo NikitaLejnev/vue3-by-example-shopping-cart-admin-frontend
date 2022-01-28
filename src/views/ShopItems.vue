@@ -2,11 +2,10 @@
   <TopBar />
   <h1>Shop Items</h1>
   <button @click="showDialog = true">Add Item to Shop</button>
-  <div v-for="shopItem of shopItems"
-    :key="shopItem.shop_item_id">
+  <div v-for="shopItem of shopItems" :key="shopItem.shop_item_id">
     <h2>{{ shopItem.name }}</h2>
     <p>Description: {{ shopItem.description }}</p>
-    <p>Price: {{ shopItem.price }}</p>
+    <p>Price: ${{ shopItem.price }}</p>
     <img :src="shopItem.image_url" :alt="shopItem.name" />
     <br />
     <button type="button" @click="deleteItem(shopItem)">
@@ -52,7 +51,7 @@
 </template>
 
 <script>
-import { GraphQLClient } from "graphql-request";
+import { GraphQLClient, gql } from "graphql-request";
 import * as yup from "yup";
 import TopBar from "@/components/TopBar";
 import { Form, Field, ErrorMessage } from "vee-validate";
@@ -106,24 +105,24 @@ export default {
     },
     async submitForm({ name, description, imageUrl, price: oldPrice }) {
       const mutation = gql`
-      mutation addShopItem(
-        $name: String
-        $description: String
-        $image_url: String
-        $price: Float
-      ) {
-        addShopItem(
-          shopItem: {
-            name: $name
-            description: $description
-            image_url: $image_url
-            price: $price
-          }
+        mutation addShopItem(
+          $name: String
+          $description: String
+          $image_url: String
+          $price: Float
         ) {
-          status
+          addShopItem(
+            shopItem: {
+              name: $name
+              description: $description
+              image_url: $image_url
+              price: $price
+            }
+          ) {
+            status
+          }
         }
-      }
-    `;
+      `;
       const variables = {
         name,
         description,
@@ -137,7 +136,7 @@ export default {
     async deleteItem({ shop_item_id: shopItemId }) {
       const mutation = gql`
         mutation removeShopItem($shopItemId: Int) {
-          removeShopItems(shopItemId: $shopItemId) {
+          removeShopItem(shopItemId: $shopItemId) {
             status
           }
         }

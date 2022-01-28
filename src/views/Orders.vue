@@ -14,7 +14,7 @@
       >
         <h4>Name: {{ orderedItems.name }}</h4>
         <p>Description: {{ orderedItems.description }}</p>
-        <p>Price: {{ orderedItems.price }}</p>
+        <p>Price: ${{ orderedItems.price }}</p>
       </div>
     </div>
     <p>
@@ -27,7 +27,7 @@
 <script>
 import { GraphQLClient, gql } from "graphql-request";
 import TopBar from '@/components/TopBar'
-const APIURL = "http://localhost:3000/graphql"
+const APIURL = "http://localhost:3000/graphql";
 const graphQLClient = new GraphQLClient(APIURL, {
   headers: {
     authorization: localStorage.getItem("token"),
