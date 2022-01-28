@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import { GraphQLClient, gql, GraphQLClient } from "graphql-request";
+import { GraphQLClient, gql } from "graphql-request";
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 
 const APIURL = "http://localhost:3000/graphql";
-const GraphQLClient = new GraphQLClient(APIURL, {
+const graphQLClient = new GraphQLClient(APIURL, {
   headers: {
     authorization: "",
   },
